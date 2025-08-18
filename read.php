@@ -59,7 +59,15 @@ if ($result->num_rows > 0) {
     echo "Nada encontrado";
 }
 
-$sql = "SELECT * FROM partidas";
+$sql = "SELECT p.id,
+               times1.nome AS time_casa_id,
+               times2.nome AS time_fora_id,
+               p.data_jogo,
+               p.gols_casa,
+               p.gols_fora
+        FROM partidas p
+        INNER JOIN times times1 ON p.time_casa_id = times1.id
+        INNER JOIN times times2 ON p.time_fora_id = times2.id";
 
 $result = $conn->query($sql);
 
@@ -87,7 +95,8 @@ if ($result->num_rows > 0) {
                         </td>
                     </tr>";
     }
-    echo "</table>";
+    echo "</table><br>";
+    echo "<a href='create.php'>Voltar</a>";
 }
 
 $conn->close();

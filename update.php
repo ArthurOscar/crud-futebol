@@ -37,11 +37,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $conn->close();
         header("Location: create.php");
     }
-    if ($tabela === "times") {
-        $nome_time = $_POST['nome_time'];
-        $cidade_time = $_POST['cidade_time'];
+    if ($tabela === "partidas") {
+        $casa = $_POST['casa'];
+        $fora = $_POST['fora'];
+        $data = $_POST['data'];
+        $gols_casa = $_POST['casa_gols'];
+        $gols_fora = $_POST['fora_gols'];
 
-        $sql = "UPDATE $tabela SET nome ='$nome_time', cidade ='$cidade_time' WHERE id = $id";
+        $sql = "UPDATE $tabela SET time_casa_id = '$casa', time_fora_id = '$fora', data_jogo= '$data', gols_casa = '$gols_casa', gols_fora = '$gols_fora' WHERE id = $id";
 
         if ($conn->query($sql) === true) {
             echo "Registro editado com sucesso.";
