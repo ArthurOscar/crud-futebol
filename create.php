@@ -24,17 +24,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $camisa = $_POST['camisa_jogador'];
         $time = $_POST['ID_time'];
 
-
-        $sql = "INSERT INTO jogadores(nome, posicao, numero_camisa, time_id) VALUES('$nome_jogador','$posicao','$camisa','$time')";
-
-        if ($conn->query($sql) === true) {
-            echo "Registro editado com sucesso.";
+        if ($camisa < 0 || $camisa > 99) {
+            echo "<script>window.alert('Número invalido!');
+            window.location.href='read.php'</script>";
         } else {
-            echo "Erro" . $sql . "<br>" . $conn->error;
-        }
+            $sql = "INSERT INTO jogadores(nome, posicao, numero_camisa, time_id) VALUES('$nome_jogador','$posicao','$camisa','$time')";
 
-        $conn->close();
-        header("Location: read.php");
+            if ($conn->query($sql) === true) {
+                echo "Registro feito com sucesso.";
+            } else {
+                echo "Erro" . $sql . "<br>" . $conn->error;
+            }
+
+            $conn->close();
+            header("Location: read.php");
+        }
     }
     if (isset($_POST['botao_partidas'])) {
         $casa = $_POST['casa'];
@@ -43,16 +47,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $gols_casa = $_POST['casa_gols'];
         $gols_fora = $_POST['fora_gols'];
 
-        $sql = "INSERT INTO partidas(time_casa_id,time_fora_id,data_jogo,gols_casa,gols_fora) VALUES('$casa','$fora','$data','$gols_casa','$gols_fora')";
-
-        if ($conn->query($sql) === true) {
-            echo "Registro editado com sucesso.";
+        if ($casa === $fora) {
+            echo "<script>window.alert('Dois times iguais!');
+            window.location.href='read.php'</script>";
         } else {
-            echo "Erro" . $sql . "<br>" . $conn->error;
-        }
 
-        $conn->close();
-        header("Location: read.php");
+            $sql = "INSERT INTO partidas(time_casa_id,time_fora_id,data_jogo,gols_casa,gols_fora) VALUES('$casa','$fora','$data','$gols_casa','$gols_fora')";
+
+            if ($conn->query($sql) === true) {
+                echo "Registro feito com sucesso.";
+            } else {
+                echo "Erro" . $sql . "<br>" . $conn->error;
+            }
+
+            $conn->close();
+            header("Location: read.php");
+        }
     }
 }
 ?>
@@ -67,29 +77,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
     <form method="POST" action="create.php">
-        <label for="times">Adicionar time:</label><br>
+        <h1>Adicionar time:</h1>
         <input type="text" placeholder="Nome" name="nome_time"><br>
         <input type="text" placeholder="Cidade" name="cidade_time"><br>
         <button type="submit" name="botao_time">Enviar</button>
     </form>
     <form method='POST'>
-        <label for='times'>Adicionar Jogadores:</label><br>
+        <h1>Adicionar Jogadores:</h1>
         <input type='text' placeholder='Nome' name='nome_jogador'><br>
         <input type='text' placeholder='Posição' maxlenght='3' name='posicao_jogador'><br>
-        <input type='number' placeholder='Número camisa' maxlenght='3' name='camisa_jogador'><br>
-        <input type="number" placeholder="ID time" name="ID_time"><br>
+        <input type='number' placeholder='Número camisa' name='camisa_jogador'><br>
+        <input type="number" placeholder="Time (ID)" name="ID_time"><br>
         <button type='submit' name='botao_jogadores'>Enviar</button>
     </form>
     <form method='POST'>
-        <label for='times'>Adicionar Partidas:</label><br>
-        <input type='number' placeholder='ID time da casa' name='casa'><br>
-        <input type='number' placeholder='ID time de fora' name='fora'><br>
+        <h1>Adicionar Partidas:</h1>
+        <input type='number' placeholder='Time da casa (ID)' name='casa'><br>
+        <input type='number' placeholder='Time de fora (ID)' name='fora'><br>
         <input type='date' name='data'><br>
         <input type='number' placeholder='Gols time da casa' name='casa_gols'><br>
         <input type='number' placeholder='Gols time de fora' name='fora_gols'><br>
         <button type='submit' name='botao_partidas'>Enviar</button>
     </form>
-    <a href="read.php">Ver registros</a>
 </body>
 
 </html>

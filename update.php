@@ -18,15 +18,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $conn->close();
-        header("Location: create.php");
+        header("Location: read.php");
     }
     if ($tabela === "jogadores") {
         $nome_jogador = $_POST['nome_jogador'];
         $posicao = $_POST['posicao_jogador'];
         $camisa = $_POST['camisa_jogador'];
+        $time = $_POST['ID_time'];
 
-
-        $sql = "UPDATE $tabela SET nome ='$nome_jogador', posicao ='$posicao', numero_camisa ='$camisa' WHERE id = $id";
+        $sql = "UPDATE $tabela SET nome ='$nome_jogador', posicao ='$posicao', numero_camisa ='$camisa', time_id='$time' WHERE id = $id";
 
         if ($conn->query($sql) === true) {
             echo "Registro editado com sucesso.";
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $conn->close();
-        header("Location: create.php");
+        header("Location: read.php");
     }
     if ($tabela === "partidas") {
         $casa = $_POST['casa'];
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $conn->close();
-        header("Location: create.php");
+        header("Location: read.php");
     }
 }
 
@@ -82,7 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <label for='times'>Editar:</label><br>
         <input type='text' placeholder='Nome' name='nome_jogador'><br>
         <input type='text' placeholder='Posição' maxlenght='3' name='posicao_jogador'><br>
-        <input type='number' placeholder='Número camisa' maxlenght='3' name='camisa_jogador'><br>
+        <input type='number' placeholder='Número camisa' name='camisa_jogador'><br>
+        <input type='number' placeholder='Time (ID)' name='ID_time'><br>
         <button type='submit' name='botao'>Enviar</button>
     </form>";
     }

@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     $conn->close();
-    header("Location: create.php");
+    header("Location: read.php");
 }
 ?>
 <html lang="en">

@@ -25,10 +25,12 @@ if ($result->num_rows > 0) {
     }
     echo "</table><br>";
 } else {
-    echo "Nada encontrado";
+    echo "Nenhum time encontrado<br>";
 }
 
-$sql = "SELECT * FROM jogadores";
+$sql = "SELECT j.id, j.nome, j.posicao, j.numero_camisa, j.time_id, t.nome AS time_nome
+        FROM jogadores j
+        LEFT JOIN times t ON j.time_id = t.id";
 
 $result = $conn->query($sql);
 
@@ -39,7 +41,7 @@ if ($result->num_rows > 0) {
             <th>Nome</th>
             <th>Posição</th>
             <th>Número da camisa</th>
-            <th>ID do time</th>
+            <th>Time</th>
         </tr>";
     while ($row = $result->fetch_assoc()) {
         echo " <tr>
@@ -47,7 +49,7 @@ if ($result->num_rows > 0) {
                         <td> {$row['nome']} </td>
                         <td> {$row['posicao']} </td>
                         <td> {$row['numero_camisa']} </td>
-                        <td> {$row['time_id']} </td>
+                        <td> {$row['time_nome']} </td>
                         <td>
                             <a href='update.php?id={$row['id']}&&table=jogadores'>Editar<a> |
                             <a href='delete.php?id={$row['id']}&&table=jogadores'>Excluir</a>
@@ -56,7 +58,7 @@ if ($result->num_rows > 0) {
     }
     echo "</table><br>";
 } else {
-    echo "Nada encontrado";
+    echo "Nenhum jogador encontrado<br>";
 }
 
 $sql = "SELECT p.id,
@@ -96,7 +98,10 @@ if ($result->num_rows > 0) {
                     </tr>";
     }
     echo "</table><br>";
-    echo "<a href='create.php'>Voltar</a>";
+    
+}else {
+    echo "Nenhuma partida encontrado<br>";
 }
+include 'create.php';
 
 $conn->close();
