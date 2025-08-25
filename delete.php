@@ -13,8 +13,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $consulta->close();
 
         if ($quantidade > 0) {
+            if (isset($_POST['deletarJogadores']) && $_POST['deletarJogadores'] === 'sim') {
+                $sql = "DELETE FROM jogadores WHERE time_id=$id";
+                if ($conn->query($sql) === true) {
+                    echo "Jogadores excluídos com sucesso.<br>";
+                } else {
+                    echo "Erro: " . $sql . "<br>" . $conn->error;
+                }
+                header("Location: read.php");
+            }
             echo "Não é possível excluir este time: existem jogadores vinculados.<br>";
-            die("<button><a href='read.php'>Voltar</a></button>");
+            echo "<form method='POST'><button name='deletarJogadores' value='sim'>Excluir Jogadores</button><button><a href='read.php'>Voltar</a></button></form>";
+            exit;
         }
         $consulta = $conn->prepare("SELECT COUNT(*) FROM partidas WHERE time_casa_id = $id or time_fora_id = $id");
         $consulta->execute();
@@ -23,8 +33,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $consulta->close();
 
         if ($quantidade > 0) {
+            if (isset($_POST['deletarPartidas']) && $_POST['deletarPartidas'] === 'sim') {
+                $sql = "DELETE FROM partidas WHERE time_casa_id OR time_fora_id=$id";
+                if ($conn->query($sql) === true) {
+                    echo "Jogadores excluídos com sucesso.<br>";
+                } else {
+                    echo "Erro: " . $sql . "<br>" . $conn->error;
+                }
+                header("Location: read.php");
+            }
             echo "Não é possível excluir este time: existem partidas vinculados.<br>";
-            die("<button><a href='read.php'>Voltar</a></button>");
+            echo "<form method='POST'><button name='deletarPartidas' value='sim'>Excluir Partidas</button><button><a href='read.php'>Voltar</a></button></form>";
+            exit;
         }
     }
     $resposta = $_POST['resposta'];
